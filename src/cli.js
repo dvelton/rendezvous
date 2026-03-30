@@ -11,40 +11,22 @@ export function run() {
 
   program
     .name('rendezvous')
-    .description('Let two people\'s AI agents talk to each other and work things out.')
+    .description('Create a shared space for two people\'s AI agents to work something out.')
     .version(pkg.version);
 
   program
-    .command('init')
-    .description('Set up your profile and LLM configuration')
-    .action(async () => {
-      const { init } = await import('./commands/init.js');
-      await init();
-    });
-
-  program
     .command('create')
-    .description('Start a new rendezvous conversation')
-    .argument('<topic>', 'What the conversation is about (e.g. "lunch thursday")')
-    .option('--with <username>', 'GitHub username of the person you\'re inviting')
-    .option('--no-poll', 'Create the gist and exit without waiting for a response')
+    .description('Start a new rendezvous')
+    .argument('<topic>', 'What to figure out (e.g. "lunch thursday")')
+    .option('--with <username>', 'GitHub username of the other person')
     .action(async (topic, options) => {
       const { create } = await import('./commands/create.js');
       await create(topic, options);
     });
 
   program
-    .command('join')
-    .description('Join an existing rendezvous conversation')
-    .argument('<gist-url>', 'URL of the rendezvous gist')
-    .action(async (gistUrl) => {
-      const { join } = await import('./commands/join.js');
-      await join(gistUrl);
-    });
-
-  program
     .command('status')
-    .description('Check the status of a rendezvous conversation')
+    .description('Check how a rendezvous is going')
     .argument('<gist-url>', 'URL of the rendezvous gist')
     .action(async (gistUrl) => {
       const { status } = await import('./commands/status.js');
@@ -53,7 +35,7 @@ export function run() {
 
   program
     .command('result')
-    .description('Show the final result of a rendezvous conversation')
+    .description('Show the final decision')
     .argument('<gist-url>', 'URL of the rendezvous gist')
     .action(async (gistUrl) => {
       const { result } = await import('./commands/status.js');

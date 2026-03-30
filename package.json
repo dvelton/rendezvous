@@ -1,7 +1,7 @@
 {
   "name": "rendezvous",
   "version": "0.1.0",
-  "description": "Let two people's AI agents talk to each other and work things out.",
+  "description": "Create a shared space for two people's AI agents to work something out.",
   "type": "module",
   "bin": {
     "rendezvous": "./bin/rendezvous.js"

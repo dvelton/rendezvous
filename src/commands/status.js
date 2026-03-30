@@ -1,10 +1,10 @@
 import { parseGistUrl, getGist, getGistComments, getGistTopic } from '../lib/gist.js';
 import { hasConverged, roundCount } from '../lib/conversation.js';
-import { getGitHubUsername } from '../lib/config.js';
+import { requireGitHub } from '../lib/config.js';
 
 export async function status(gistUrl) {
   const gistId = parseGistUrl(gistUrl);
-  const username = getGitHubUsername();
+  const username = requireGitHub();
 
   const gist = getGist(gistId);
   const topic = getGistTopic(gist);
@@ -19,7 +19,6 @@ export async function status(gistUrl) {
     return;
   }
 
-  // Check for a result comment
   const resultComment = comments.find((c) =>
     c.body.startsWith('**Result')
   );
@@ -31,14 +30,13 @@ export async function status(gistUrl) {
   }
 
   if (hasConverged(comments)) {
-    console.log('Status: agreed (result pending)\n');
+    console.log('Status: agreed\n');
   } else {
     const lastUser = comments[comments.length - 1].user;
     const waiting = lastUser === username ? 'the other person' : 'you';
     console.log(`Status: in progress (waiting for ${waiting})\n`);
   }
 
-  // Show conversation
   console.log('Conversation:');
   for (const c of comments) {
     console.log(`\n  @${c.user}:`);
@@ -59,7 +57,6 @@ export async function result(gistUrl) {
   if (resultComment) {
     const body = resultComment.body
       .replace(/^\*\*Result\*\*\n*/, '')
-      .replace(/^\*\*Result \(max rounds reached\)\*\*\n*/, '')
       .trim();
     console.log(`Rendezvous: "${topic}"\n`);
     console.log(body);

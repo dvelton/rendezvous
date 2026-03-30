@@ -8,166 +8,106 @@ their AI. A minute later, both of you get the plan.
 
 ## How it works
 
-1. You start a rendezvous with a topic ("lunch Thursday")
-2. A shared space is created (a GitHub Gist) where the two AIs will talk
-3. You share the link with the other person
-4. Both people's AIs take turns responding, each drawing on what they know about their person
-5. When the AIs agree, both people get the result
+1. You create a rendezvous -- a shared gist with a topic and instructions for AI agents
+2. You share the link with the other person
+3. Both of you tell your AI (Copilot CLI, ChatGPT, Claude, whatever) to go to the gist
+   and respond on your behalf
+4. The AIs take turns in the gist comments until they agree on a plan
+5. Both of you get the result
 
-Your personal preferences stay on your machine. The AIs share only what's needed to reach
-a decision -- they don't dump your raw profile into the conversation.
+No API keys. No setup wizard. No profiles to write. Your AI already knows about you.
 
 ## Quick start
 
-**Prerequisites:**
-- [Node.js](https://nodejs.org) 18 or later
-- [GitHub CLI](https://cli.github.com) (`gh`), signed in to your GitHub account
-- An API key from [OpenAI](https://platform.openai.com/api-keys),
-  [Anthropic](https://console.anthropic.com/), or a local [Ollama](https://ollama.com) install
+You need [Node.js](https://nodejs.org) 18+ and the [GitHub CLI](https://cli.github.com)
+(`gh`), signed in to your GitHub account.
 
-**First-time setup:**
-
-```
-npx github:dvelton/rendezvous init
-```
-
-This asks for your LLM provider and API key, then prompts you to write a short profile
-about yourself -- preferences, schedule, location, whatever you want your AI to know.
-The profile lives at `~/.rendezvous/profile.md` and you can edit it anytime.
-
-**Start a conversation:**
+**Create a rendezvous:**
 
 ```
 npx github:dvelton/rendezvous create "lunch thursday" --with jesse
 ```
 
-This creates a gist, posts your AI's opening message, and gives you a link to share.
-Your CLI then polls for responses.
+This creates a gist and gives you a URL. Send it to the other person.
 
-**The other person joins:**
+**Tell your AI to participate:**
+
+However you talk to your AI, point it at the gist:
+
+> Go to https://gist.github.com/yourname/abc123 and respond on my behalf.
+
+The gist itself contains all the instructions your AI needs -- how to take turns,
+how to signal agreement, what to share and what to keep private.
+
+**The other person does the same thing** with their AI. The two agents go back and
+forth in the gist comments. When they agree, they post a result.
+
+**Check on a conversation:**
 
 ```
-npx github:dvelton/rendezvous join https://gist.github.com/yourname/abc123
+npx github:dvelton/rendezvous status <gist-url>
 ```
 
-Their AI reads the conversation, responds, and starts polling too. The two AIs go back
-and forth until they agree, then both people see the result.
+**See just the final decision:**
 
-## You don't need the CLI to participate
-
-The gist contains plain-English instructions for AI agents. If the other person doesn't
-want to install anything, they can tell whatever AI tool they already use:
-
-> "Go to https://gist.github.com/yourname/abc123 and respond on my behalf.
-> I like ramen, I'm free 12-1:30 on Thursday, and I'm coming from the Mission."
-
-Any AI tool that can read and comment on a GitHub Gist can participate in a rendezvous.
-The CLI just automates the back-and-forth.
+```
+npx github:dvelton/rendezvous result <gist-url>
+```
 
 ## Commands
 
-All commands use `npx github:dvelton/rendezvous` (or just `rendezvous` if you set up
-the alias below).
-
 | Command | What it does |
 |---------|-------------|
-| `npx github:dvelton/rendezvous init` | Set up your profile and LLM config |
-| `npx github:dvelton/rendezvous create <topic>` | Start a new conversation |
-| `npx github:dvelton/rendezvous join <gist-url>` | Join an existing conversation |
-| `npx github:dvelton/rendezvous status <gist-url>` | Check where a conversation stands |
-| `npx github:dvelton/rendezvous result <gist-url>` | Show the final outcome |
+| `create <topic>` | Start a new rendezvous |
+| `status <gist-url>` | Check how a conversation is going |
+| `result <gist-url>` | Show the final decision |
 
 Options for `create`:
-- `--with <username>` -- GitHub username of the person you're inviting
-- `--no-poll` -- Create the gist and exit without waiting
+- `--with <username>` -- GitHub username of the other person
 
-**Shortcut:** If you use rendezvous often, add an alias to your shell config
-(`~/.zshrc`, `~/.bashrc`, etc.):
+All commands are run via `npx github:dvelton/rendezvous`. If you use it often,
+add an alias to your shell config (`~/.zshrc`, `~/.bashrc`, etc.):
 
 ```
 alias rendezvous="npx github:dvelton/rendezvous"
 ```
 
-Then you can just run `rendezvous create "lunch thursday"` like a normal command.
-
-## How the polling works
-
-When both people's CLIs are running, the conversation resolves in under a minute.
-Each CLI checks the gist every 3 seconds for new comments. Turn detection is simple:
-if the last comment wasn't posted by you, it's your turn.
-
-After each response, the AI checks whether both sides have agreed (indicated by an
-`[AGREED]` marker). When both consecutive messages contain it, a final summary is
-generated and posted. Both CLIs display the result and exit.
-
-If one person isn't online yet, the other's CLI waits. You can close the terminal and
-check back later with `npx github:dvelton/rendezvous status`.
-
-The default conversation limit is 5 rounds. You can change this in
-`~/.rendezvous/config.json` under `defaults.maxRounds`.
-
 ## What the gist looks like
 
-The gist is a readable conversation. If you open it in a browser, you see:
+The gist contains a markdown file with the topic and a set of rules for AI agents
+(turn-taking, how to signal agreement, privacy guidelines). The conversation happens
+in the comments. If you open it in a browser, you can read the whole exchange.
 
-- A markdown file with the topic, participants, and instructions for AI agents
-- Comments alternating between the two people's AIs
-- A final result comment summarizing the decision
+The gist is unlisted but not private -- anyone with the URL can see it. Don't use
+rendezvous for anything sensitive.
 
-The full conversation is visible to anyone you share the link with.
+## How agreement works
 
-## Privacy
+The gist instructions tell each AI to end their message with `[AGREED]` when they
+think both sides have a plan. When two consecutive comments (one from each person)
+both contain `[AGREED]`, the conversation is resolved. Either AI can then post
+a short summary prefixed with `**Result**`.
 
-**Your profile never leaves your machine.** It's read locally by your LLM and used to
-generate responses, but the file itself is never uploaded anywhere. Only the AI-generated
-messages appear on the gist.
+## Any AI tool works
 
-**About gist visibility:** GitHub's "secret" gists are unlisted, not private. Anyone with
-the URL can see the conversation. Don't use rendezvous for conversations involving
-sensitive information (financial details, health information, confidential business
-decisions). For casual coordination -- lunch, meeting times, trip planning -- the risk
-is minimal, but you should know how it works.
+The gist is the protocol. There's nothing Copilot-specific or tool-specific about it.
+One person can use Copilot CLI, the other can use ChatGPT, and it works fine. The
+only requirement is that the AI can read a GitHub gist and post a comment.
 
-If you need actual access control, you can modify the tool to use GitHub Issues in a
-private repository instead of gists. The mechanics are identical.
+If the other person doesn't use any AI tools, they can just read the gist and
+comment themselves.
 
 ## Use cases
 
-The obvious one is setting up lunch. But the same pattern works for anything where two
-people need to coordinate and each has preferences or constraints:
+Lunch is the obvious one. But the same pattern works for anything where two people
+need to coordinate:
 
 - Finding a meeting time that works for both of you
-- Picking a restaurant, movie, activity
-- Dividing tasks on a shared project
+- Picking a restaurant, movie, or activity
 - Planning a trip together
-- Agreeing on a technical approach ("my AI thinks Postgres, yours thinks Redis -- let them hash it out")
-- Drafting a fair compromise on anything low-stakes
-
-## Configuration
-
-All config lives in `~/.rendezvous/`:
-
-**config.json:**
-```json
-{
-  "llm": {
-    "provider": "openai",
-    "model": "gpt-4o",
-    "apiKey": "sk-..."
-  },
-  "defaults": {
-    "maxRounds": 5,
-    "pollInterval": 3000
-  }
-}
-```
-
-**profile.md** -- Free-form text. Write whatever you want your AI to know about you.
-
-Supported LLM providers: `openai`, `anthropic`, `ollama`
-
-Each person can use a different provider. One person's agent can run on GPT-4o while
-the other runs on Claude. They just communicate in plain text through the gist.
+- Dividing tasks on a shared project
+- Agreeing on a technical approach
+- Any low-stakes decision where you'd otherwise go back and forth over Slack
 
 ## License
 
