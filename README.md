@@ -25,16 +25,10 @@ a decision -- they don't dump your raw profile into the conversation.
 - An API key from [OpenAI](https://platform.openai.com/api-keys),
   [Anthropic](https://console.anthropic.com/), or a local [Ollama](https://ollama.com) install
 
-**Install:**
-
-```
-npm install -g rendezvous
-```
-
 **First-time setup:**
 
 ```
-rendezvous init
+npx github:dvelton/rendezvous init
 ```
 
 This asks for your LLM provider and API key, then prompts you to write a short profile
@@ -44,7 +38,7 @@ The profile lives at `~/.rendezvous/profile.md` and you can edit it anytime.
 **Start a conversation:**
 
 ```
-rendezvous create "lunch thursday" --with jesse
+npx github:dvelton/rendezvous create "lunch thursday" --with jesse
 ```
 
 This creates a gist, posts your AI's opening message, and gives you a link to share.
@@ -53,7 +47,7 @@ Your CLI then polls for responses.
 **The other person joins:**
 
 ```
-rendezvous join https://gist.github.com/yourname/abc123
+npx github:dvelton/rendezvous join https://gist.github.com/yourname/abc123
 ```
 
 Their AI reads the conversation, responds, and starts polling too. The two AIs go back
@@ -72,17 +66,29 @@ The CLI just automates the back-and-forth.
 
 ## Commands
 
+All commands use `npx github:dvelton/rendezvous` (or just `rendezvous` if you set up
+the alias below).
+
 | Command | What it does |
 |---------|-------------|
-| `rendezvous init` | Set up your profile and LLM config |
-| `rendezvous create <topic>` | Start a new conversation |
-| `rendezvous join <gist-url>` | Join an existing conversation |
-| `rendezvous status <gist-url>` | Check where a conversation stands |
-| `rendezvous result <gist-url>` | Show the final outcome |
+| `npx github:dvelton/rendezvous init` | Set up your profile and LLM config |
+| `npx github:dvelton/rendezvous create <topic>` | Start a new conversation |
+| `npx github:dvelton/rendezvous join <gist-url>` | Join an existing conversation |
+| `npx github:dvelton/rendezvous status <gist-url>` | Check where a conversation stands |
+| `npx github:dvelton/rendezvous result <gist-url>` | Show the final outcome |
 
 Options for `create`:
 - `--with <username>` -- GitHub username of the person you're inviting
 - `--no-poll` -- Create the gist and exit without waiting
+
+**Shortcut:** If you use rendezvous often, add an alias to your shell config
+(`~/.zshrc`, `~/.bashrc`, etc.):
+
+```
+alias rendezvous="npx github:dvelton/rendezvous"
+```
+
+Then you can just run `rendezvous create "lunch thursday"` like a normal command.
 
 ## How the polling works
 
@@ -95,7 +101,7 @@ After each response, the AI checks whether both sides have agreed (indicated by 
 generated and posted. Both CLIs display the result and exit.
 
 If one person isn't online yet, the other's CLI waits. You can close the terminal and
-check back later with `rendezvous status`.
+check back later with `npx github:dvelton/rendezvous status`.
 
 The default conversation limit is 5 rounds. You can change this in
 `~/.rendezvous/config.json` under `defaults.maxRounds`.
