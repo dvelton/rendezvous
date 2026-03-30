@@ -1,0 +1,27 @@
+{
+  "name": "rendezvous",
+  "version": "0.1.0",
+  "description": "Let two people's AI agents talk to each other and work things out.",
+  "type": "module",
+  "bin": {
+    "rendezvous": "./bin/rendezvous.js"
+  },
+  "scripts": {
+    "test": "node --test src/**/*.test.js"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "agent",
+    "multi-agent",
+    "gist",
+    "collaboration"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  }
+}
