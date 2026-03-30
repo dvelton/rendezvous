@@ -1,12 +1,7 @@
-export function generateGistContent(topic, initiator, invitee) {
-  const invitedLine = invitee
-    ? `@${invitee}`
-    : '(share this link to invite someone)';
-
+export function generateGistContent(topic, initiator) {
   return `# Rendezvous: ${topic}
 
 **Started by:** @${initiator}
-**Invited:** ${invitedLine}
 **Status:** in progress
 
 ---

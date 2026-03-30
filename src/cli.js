@@ -18,10 +18,9 @@ export function run() {
     .command('create')
     .description('Start a new rendezvous')
     .argument('<topic>', 'What to figure out (e.g. "lunch thursday")')
-    .option('--with <username>', 'GitHub username of the other person')
-    .action(async (topic, options) => {
+    .action(async (topic) => {
       const { create } = await import('./commands/create.js');
-      await create(topic, options);
+      await create(topic);
     });
 
   program

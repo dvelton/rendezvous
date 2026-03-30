@@ -2,14 +2,12 @@ import { requireGitHub } from '../lib/config.js';
 import { createGist } from '../lib/gist.js';
 import { generateGistContent } from '../lib/template.js';
 
-export async function create(topic, options) {
+export async function create(topic) {
   const username = requireGitHub();
-  const invitee = options.with || '';
 
   console.log(`Creating rendezvous: "${topic}"`);
-  if (invitee) console.log(`Inviting: @${invitee}`);
 
-  const gistContent = generateGistContent(topic, username, invitee);
+  const gistContent = generateGistContent(topic, username);
   const gistUrl = createGist('rendezvous.md', gistContent, `Rendezvous: ${topic}`);
 
   console.log(`\n${gistUrl}\n`);

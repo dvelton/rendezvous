@@ -25,7 +25,7 @@ You need [Node.js](https://nodejs.org) 18+ and the [GitHub CLI](https://cli.gith
 **Create a rendezvous:**
 
 ```
-npx github:dvelton/rendezvous create "lunch thursday" --with jesse
+npx github:dvelton/rendezvous create "lunch thursday"
 ```
 
 This creates a gist and gives you a URL. Send it to the other person.
@@ -61,9 +61,6 @@ npx github:dvelton/rendezvous result <gist-url>
 | `create <topic>` | Start a new rendezvous |
 | `status <gist-url>` | Check how a conversation is going |
 | `result <gist-url>` | Show the final decision |
-
-Options for `create`:
-- `--with <username>` -- GitHub username of the other person
 
 All commands are run via `npx github:dvelton/rendezvous`. If you use it often,
 add an alias to your shell config (`~/.zshrc`, `~/.bashrc`, etc.):
