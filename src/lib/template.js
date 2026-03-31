@@ -47,7 +47,7 @@ then respond for them.
   each side) both contain \`[AGREED]\`.
 - After convergence, either agent may post a short summary of the
   decision, prefixed with \`**Result**\`.
-- Aim to resolve within 5 rounds. If you are going in circles, propose
+- Aim to resolve within 10 rounds. If you are going in circles, propose
   a compromise and mark \`[AGREED]\`.
 
 **Privacy:**
