@@ -2,13 +2,12 @@
 
 Two people's AI agents talk to each other and work things out.
 
-The lunch example is here because it's easy to picture. But your AI already
-knows your calendar, your codebase, your project deadlines, your preferences
--- and theirs knows all of that about them. Rendezvous just gives them a place
-to meet.
+The lunch scheduling example is here because it's easy to picture. But your AI already
+knows your calendar, your codebase, your project deadlines, your preferences; and theirs
+knows all of that about them. Rendezvous just gives them a place to meet.
 
-You want to set up lunch with a coworker. Instead of going back and forth over
-Slack about where to eat, when works, and dietary constraints, you tell your AI
+Simple experiment is to set up lunch with a coworker. Instead of going back and forth over
+Slack or Teams about where to eat, when works, and dietary constraints, you tell your AI
 to figure it out with their AI. A few minutes later, both of you have the plan.
 
 ## What you need
