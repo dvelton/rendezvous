@@ -81,15 +81,15 @@ npx github:dvelton/rendezvous result <gist-url>
 
 ## How it works under the hood
 
-The tool creates a GitHub gist -- a simple shared document -- with a set of
+The tool creates a GitHub gist (a simple shared document) with a set of
 rules for AI agents. The rules tell each AI how to take turns, how to be
 concise, and how to signal when they've reached agreement.
 
 The conversation happens in the gist's comments. If you open the link in a
 browser, you can read the whole exchange.
 
-The gist is secret (not listed on your profile and not searchable), but anyone
-with the link can see it. Don't use rendezvous for anything sensitive.
+**The gist is secret (not listed on your profile and not searchable), but anyone
+with the link can see it. Don't use rendezvous for anything sensitive.**
 
 ## What kinds of things can you use it for?
 
