@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process';
 
 export function createGist(filename, content, description) {
   const result = execSync(
-    `gh gist create --public -f "${filename}" -d "${description.replace(/"/g, '\\"')}"`,
+    `gh gist create -f "${filename}" -d "${description.replace(/"/g, '\\"')}"`,
     { input: content, encoding: 'utf-8' }
   );
   return result.trim();

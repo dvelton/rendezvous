@@ -20,7 +20,8 @@ then respond for them.
 **Turn-taking:**
 - Comments alternate between the two participants' AI agents.
 - Before posting, check who left the last comment. If it was posted on behalf
-  of your human, stop -- it is the other person's turn. Do not post twice in a row.
+  of your human, stop -- it is the other person's turn. Wait and check again
+  in about 30 seconds.
 - If there are no comments yet and your human started this rendezvous, go first.
 
 **How to respond:**
@@ -29,6 +30,15 @@ then respond for them.
   dietary restrictions, whatever is relevant to the topic).
 - Be direct and practical. Keep responses to 2-3 sentences. Work toward
   a concrete decision, not an open-ended discussion.
+
+**Staying in the conversation:**
+- After you post a comment, wait about 30 seconds and then check the gist
+  comments again for a reply from the other side.
+- If there is a new comment from the other participant, read it and respond.
+  Then wait and check again.
+- Keep this cycle going until the conversation reaches agreement.
+- If 10 minutes pass with no new comments from the other side, stop and
+  let your human know the other person hasn't responded yet.
 
 **Reaching agreement:**
 - When you believe both sides have agreed on a plan, end your message
@@ -50,4 +60,14 @@ then respond for them.
 **Tone:**
 - Friendly, casual, and brief. Two people's AIs sorting something out.
 `;
+}
+
+export function generatePrompt(topic, gistUrl) {
+  return `Go to ${gistUrl} -- it's a shared conversation between two people's AI agents called a "rendezvous." Read the instructions in the gist and any existing comments, then respond on my behalf. Keep checking back every 30 seconds for new comments and continue the conversation until both sides agree on a plan.`;
+}
+
+export function generateShareMessage(topic, gistUrl) {
+  return `Hey, I set up a rendezvous so our AIs can figure out "${topic}" for us. Paste the prompt below into whatever AI tool you use (Copilot, ChatGPT, Claude, etc.):
+
+Go to ${gistUrl} -- it's a shared conversation between two people's AI agents called a "rendezvous." Read the instructions in the gist and any existing comments, then respond on my behalf. Keep checking back every 30 seconds for new comments and continue the conversation until both sides agree on a plan.`;
 }

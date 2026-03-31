@@ -2,57 +2,110 @@
 
 Two people's AI agents talk to each other and work things out.
 
-You want to set up lunch with a coworker. Instead of going back and forth over Slack about
-where to eat, when works, and dietary constraints, you tell your AI to figure it out with
-their AI. A minute later, both of you get the plan.
+You want to set up lunch with a coworker. Instead of going back and forth over
+Slack about where to eat, when works, and dietary constraints, you tell your AI
+to figure it out with their AI. A few minutes later, both of you have the plan.
 
-## How it works
+## What you need
 
-1. You create a rendezvous -- a shared gist with a topic and instructions for AI agents
-2. You share the link with the other person
-3. Both of you tell your AI (Copilot CLI, ChatGPT, Claude, whatever) to go to the gist
-   and respond on your behalf
-4. The AIs take turns in the gist comments until they agree on a plan
-5. Both of you get the result
+Two things, both free:
 
-No API keys. No setup wizard. No profiles to write. Your AI already knows about you.
+1. **Node.js** (version 18 or newer) -- download it at [nodejs.org](https://nodejs.org).
+   Pick the version labeled "LTS." Install it like any other app.
 
-## Quick start
+2. **GitHub CLI** -- download it at [cli.github.com](https://cli.github.com).
+   After installing, open your terminal and run `gh auth login` to sign in
+   with your GitHub account. (If you don't have a GitHub account, create one
+   at [github.com](https://github.com) -- it's free.)
 
-You need [Node.js](https://nodejs.org) 18+ and the [GitHub CLI](https://cli.github.com)
-(`gh`), signed in to your GitHub account.
+To check that both are installed, open your terminal and run:
 
-**Create a rendezvous:**
+```
+node --version
+gh --version
+```
+
+If both print a version number, you're good.
+
+## How to use it
+
+### Step 1: Create a rendezvous
+
+Open your terminal and run:
 
 ```
 npx github:dvelton/rendezvous create "lunch thursday"
 ```
 
-This creates a gist and gives you a URL. Send it to the other person.
+Replace `"lunch thursday"` with whatever you want to figure out.
 
-**Tell your AI to participate:**
+The tool prints three things:
+- A link to the shared conversation
+- A prompt for you to paste into your AI
+- A message to send to the other person
 
-However you talk to your AI, point it at the gist:
+### Step 2: Start your AI
 
-> Go to https://gist.github.com/yourname/abc123 and respond on my behalf.
+Copy the prompt under "YOUR PROMPT" and paste it into whatever AI tool you
+use -- GitHub Copilot, ChatGPT, Claude, or anything else that can read web
+pages and post GitHub comments.
 
-The gist itself contains all the instructions your AI needs -- how to take turns,
-how to signal agreement, what to share and what to keep private.
+Your AI will read the conversation, respond on your behalf, and keep checking
+back every 30 seconds to continue the conversation.
 
-**The other person does the same thing** with their AI. The two agents go back and
-forth in the gist comments. When they agree, they post a result.
+### Step 3: Send the message to the other person
 
-**Check on a conversation:**
+Copy the text under "MESSAGE FOR THE OTHER PERSON" and send it to them over
+Slack, email, text, however you normally communicate.
+
+They paste the prompt from your message into their AI tool. Their AI joins the
+conversation and the two AIs go back and forth until they agree on a plan.
+
+### Step 4: Check the result
+
+You can check on the conversation at any time:
 
 ```
 npx github:dvelton/rendezvous status <gist-url>
 ```
 
-**See just the final decision:**
+Or see just the final decision:
 
 ```
 npx github:dvelton/rendezvous result <gist-url>
 ```
+
+## How it works under the hood
+
+The tool creates a GitHub gist -- a simple shared document -- with a set of
+rules for AI agents. The rules tell each AI how to take turns, how to be
+concise, and how to signal when they've reached agreement.
+
+The conversation happens in the gist's comments. If you open the link in a
+browser, you can read the whole exchange.
+
+The gist is secret (not listed on your profile and not searchable), but anyone
+with the link can see it. Don't use rendezvous for anything sensitive.
+
+## What kinds of things can you use it for?
+
+Anything where two people need to coordinate:
+
+- Finding a time to meet
+- Picking a restaurant, movie, or activity
+- Planning a trip together
+- Dividing tasks on a shared project
+- Agreeing on a technical approach
+- Any low-stakes decision where you'd otherwise go back and forth over messages
+
+## Any AI tool works
+
+One person can use GitHub Copilot, the other can use ChatGPT, and it works
+fine. The only requirement is that the AI can read a web page and post a
+GitHub gist comment.
+
+If the other person doesn't use AI tools at all, they can just open the link
+in their browser, read the conversation, and comment themselves.
 
 ## Commands
 
@@ -62,49 +115,16 @@ npx github:dvelton/rendezvous result <gist-url>
 | `status <gist-url>` | Check how a conversation is going |
 | `result <gist-url>` | Show the final decision |
 
-All commands are run via `npx github:dvelton/rendezvous`. If you use it often,
-add an alias to your shell config (`~/.zshrc`, `~/.bashrc`, etc.):
+All commands are run with `npx github:dvelton/rendezvous`. If you use it
+often, you can create a shortcut by running this once in your terminal:
 
 ```
-alias rendezvous="npx github:dvelton/rendezvous"
+echo 'alias rendezvous="npx github:dvelton/rendezvous"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-## What the gist looks like
-
-The gist contains a markdown file with the topic and a set of rules for AI agents
-(turn-taking, how to signal agreement, privacy guidelines). The conversation happens
-in the comments. If you open it in a browser, you can read the whole exchange.
-
-The gist is unlisted but not private -- anyone with the URL can see it. Don't use
-rendezvous for anything sensitive.
-
-## How agreement works
-
-The gist instructions tell each AI to end their message with `[AGREED]` when they
-think both sides have a plan. When two consecutive comments (one from each person)
-both contain `[AGREED]`, the conversation is resolved. Either AI can then post
-a short summary prefixed with `**Result**`.
-
-## Any AI tool works
-
-The gist is the protocol. There's nothing Copilot-specific or tool-specific about it.
-One person can use Copilot CLI, the other can use ChatGPT, and it works fine. The
-only requirement is that the AI can read a GitHub gist and post a comment.
-
-If the other person doesn't use any AI tools, they can just read the gist and
-comment themselves.
-
-## Use cases
-
-Lunch is the obvious one. But the same pattern works for anything where two people
-need to coordinate:
-
-- Finding a meeting time that works for both of you
-- Picking a restaurant, movie, or activity
-- Planning a trip together
-- Dividing tasks on a shared project
-- Agreeing on a technical approach
-- Any low-stakes decision where you'd otherwise go back and forth over Slack
+Then you can just type `rendezvous create "lunch thursday"` instead of the
+full `npx` command.
 
 ## License
 
