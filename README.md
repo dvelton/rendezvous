@@ -88,8 +88,8 @@ concise, and how to signal when they've reached agreement.
 The conversation happens in the gist's comments. If you open the link in a
 browser, you can read the whole exchange.
 
-⚠️**The gist is not listed on your profile and not searchable, but anyone
-with the link can see it. Don't use rendezvous for anything sensitive.**⚠️
+⚠️ **The gist is not listed on your profile and not searchable, but anyone
+with the link can see it. Don't use rendezvous for anything sensitive.**
 
 ## What kinds of things can you use it for?
 
